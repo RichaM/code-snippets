@@ -1,0 +1,73 @@
+/**
+ * @ngdoc method
+ * @name jsonToCsvConvertor
+ * @description
+ * modifies JSONdata to CSV data which can be exported to csv file
+ * @returns {string}
+ *
+ */  
+function jsonToCsvConvertor(JSONData, reportTitle) {
+	//If JSONData is not an object then JSON.parse will parse the JSON string in an Object
+	var arrData = typeof JSONData !== 'object' ? JSON.parse(JSONData) : JSONData,                    
+		csv = '',
+		row,
+		key1,
+		i,
+		subGridData;
+
+	//Set Report title in first row or line                    
+	csv += reportTitle + '\r\n\n';
+
+	row = '';                        
+	for (key1 in arrData[0]) {                         
+		if(key1 !== 'subGridOptions' && key1 !== '$$hashKey'){
+			row += key1 + ',';
+		}
+	}                                  
+	csv += row + '\r\n';
+	
+	for (i = 0; i < arrData.length; i++) {
+		row = '';
+		subGridData = '';                                        
+		for (key1 in arrData[i]) {
+			if(key1 !== 'subGridOptions' && key1 !== '$$hashKey'){
+				row += '"' + arrData[i][key1] + '",';
+			}
+			else if(key1 === 'subGridOptions'){
+				//csv += row + '\r\n';
+				subGridData = writeSubGridData(arrData[i][key1].data);                                
+			}                     
+		}
+		csv += row + '\r\n';
+		csv = subGridData ? csv + subGridData + '\r\n' : csv;
+	}
+	if (csv === '') {
+		console.log('Invalid data');
+	}
+	return csv;     
+}
+//Generates subgrid Data to exportable form
+function writeSubGridData(subgridData){
+	var j,
+		key2,             
+		csv = '',
+		row = '';
+	for (key2 in subgridData[0]){
+		if(key2 !== '$$hashKey'){
+			row += key2 + ',';  
+		}                                
+	}
+	csv = row + '\r\n';
+	for (j=0; j < subgridData.length ; j++){
+		row = '';                                    
+		for(key2 in subgridData[j]){
+			if(key2 !== '$$hashKey'){                                
+				row += '"' + subgridData[j][key2]+ '",';
+			}
+		}
+		csv += row + '\r\n';
+	}
+	return csv;
+}
+        
+jsonToCsvConvertor(exportData, 'New-Report');
