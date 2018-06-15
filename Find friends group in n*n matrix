@@ -1,0 +1,29 @@
+/*There are n students in a class. Every student can have 0 or more friends. If A is a friend of B and B is a friend of C then A and C are also friends. 
+So we define a friend circle as a group of students who are friends as given by above definition. Given an nXn-matrix friends which consists of characters 0 or 1. If friends[i][j]=1, then ith and jth students are friends, friends[i][j]=0, then i and j are not friends. Find the such friend circles in the class.*/
+
+function findGroup(arr){
+var i,j, groupStr = '';
+for(i=0; i<arr.length; i++){
+ for (j=0; j< arr.length; j++){
+   if((arr[i][j] === 1) && groupStr.indexOf(j)<0){
+     if(i>0 && arr[i][j-1] === 0){
+        groupStr = groupStr ? groupStr + '|' + j : groupStr + j;
+     }
+     else{
+          groupStr = groupStr ? groupStr  + ',' + j : groupStr + j;    
+     }
+   }
+ }
+}
+  console.log(groupStr);
+}
+var arr = [
+  [1,1,0,0],
+  [1,1,1,0],
+  [0,0,1,0],
+  [0,0,0,1]
+];
+findGroup(arr);
+ 
+
+
