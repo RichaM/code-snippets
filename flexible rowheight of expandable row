@@ -1,0 +1,16 @@
+                        onRegisterApi: function (gridApi) {
+                            self.gridApi = gridApi;
+                            if(self.gridApi.expandable){
+                                self.gridCustomOptions.expandableRowTemplate=
+                                '/partials/expandable-row-template.html';                                
+                                self.gridApi.expandable.on.rowExpandedStateChanged($scope, function(row) {
+                                    if(row.entity.subGridOptions.data.length > 10){
+                                        row.expandedRowHeight = 40 + 10 * 30;
+                                    }
+                                    else{
+                                        row.expandedRowHeight = 40 + row.entity.subGridOptions.data.length * 30;
+                                        $scope.gridOptions.expandableRowHeight = row.expandedRowHeight;
+                                    }
+                                });    
+                            }                        
+                        },
