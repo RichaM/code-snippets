@@ -1,0 +1,50 @@
+JS part is below
+
+// global variable for the player
+window.jQuery = window.$ = require('jquery');
+var players = [];
+
+// this function gets called when API is ready to use
+function onYouTubeIframeAPIReady() {
+    // create the global player from the specific iframe (#video)
+	let playerslist = $('.video');
+	let totalNoOfPlayers = playerslist.length;
+	for (let i =0; i<totalNoOfPlayers; i++){
+		players[i] = new YT.Player(playerslist[i], {
+	        events: {
+	            // call this function when player is ready to use
+	            'onReady': onPlayerReady
+	        }
+	    });		
+	}
+}
+
+function onPlayerReady(event) {
+    // bind events
+    var playButton = $('.play-icon');
+    if(playButton.hasClass('play')){
+    	playButton.parents('.bg-wrapper').find('.textbox-wrapper').hide();
+    }
+    playButton.on('click', function() {
+    	let curPlayBtn = $(this);
+    	let curPlayBtnIndex = playButton.index(this);
+    	if(curPlayBtn.hasClass('play')){
+    		curPlayBtn.removeClass('play')
+            players[curPlayBtnIndex].pauseVideo();
+    		$('.textbox-wrapper').show()
+    	}
+    	else {
+    		curPlayBtn.addClass('play')
+    		players[curPlayBtnIndex].playVideo();
+    		$('.textbox-wrapper').hide()
+    	}
+    });	
+}
+
+$(document).ready(function () {
+	onYouTubeIframeAPIReady();
+	//onYouTubePlayerAPIReady();
+});
+
+//Html part is below 
+<iframe class="video" src="${provide videoPath}?autoplay=${assign bolean value to variable isAutoPlay}&enablejsapi=1&showinfo=0&controls=0&autohid=1" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
