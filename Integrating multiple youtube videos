@@ -1,11 +1,12 @@
 JS part is below
 
-// global variable for the player
+	// global variable for the player
 window.jQuery = window.$ = require('jquery');
 var players = [];
 
 // this function gets called when API is ready to use
-function onYouTubeIframeAPIReady() {
+//function onYouTubeIframeAPIReady() {
+window.YT.ready(function() {
     // create the global player from the specific iframe (#video)
 	let playerslist = $('.video');
 	let totalNoOfPlayers = playerslist.length;
@@ -17,34 +18,53 @@ function onYouTubeIframeAPIReady() {
 	        }
 	    });		
 	}
-}
+});
 
 function onPlayerReady(event) {
     // bind events
     var playButton = $('.play-icon');
-    if(playButton.hasClass('play')){
-    	playButton.parents('.bg-wrapper').find('.textbox-wrapper').hide();
-    }
-    playButton.on('click', function() {
+    playButton.map(function() {
+    	let curPlayBtn = $(this);
+        if(curPlayBtn.hasClass('play')){
+        	curPlayBtn.siblings('.inner-container').hide();
+        	curPlayBtn.find('.fa-play').hide();
+        	curPlayBtn.find('.fa-pause').show();
+        }
+    });
+    playButton.off('click').on('click', function() {
     	let curPlayBtn = $(this);
     	let curPlayBtnIndex = playButton.index(this);
     	if(curPlayBtn.hasClass('play')){
     		curPlayBtn.removeClass('play')
             players[curPlayBtnIndex].pauseVideo();
-    		$('.textbox-wrapper').show()
+    		curPlayBtn.siblings('.inner-container').show();
+    		curPlayBtn.find('.fa-play').show();
+    		curPlayBtn.find('.fa-pause').hide();
     	}
-    	else {
+    	else {	
     		curPlayBtn.addClass('play')
     		players[curPlayBtnIndex].playVideo();
-    		$('.textbox-wrapper').hide()
+    		curPlayBtn.siblings('.inner-container').hide();
+    		curPlayBtn.find('.fa-play').hide();
+    		curPlayBtn.find('.fa-pause').show();
     	}
     });	
 }
 
 $(document).ready(function () {
-	onYouTubeIframeAPIReady();
-	//onYouTubePlayerAPIReady();
+	//onYouTubeIframeAPIReady();
 });
 
+
+
 //Html part is below 
-<iframe class="video" src="${provide videoPath}?autoplay=${assign bolean value to variable isAutoPlay}&enablejsapi=1&showinfo=0&controls=0&autohid=1" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+					<iframe class="video"
+						src="${pdict.videoPath}?enablejsapi=1&showinfo=0&controls=0&autohide=1&autoplay=${pdict.isAutoPlay}"
+						frameborder="0"
+						allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+						allowfullscreen></iframe>
+					<a href="javascript:void(0)"
+					class="play-icon ${(pdict.isAutoPlay == 1) ? 'play' : ''}"> 
+					<i class="fa fa-play" aria-hidden="true"></i>
+					<i class="fa fa-pause" aria-hidden="true"></i>
+					</a>
