@@ -1,0 +1,40 @@
+unfilled arrow
+<div class='downward-triangle'><div class='empty'></div></div>
+
+    /*style the arrow inside the select element:*/
+    .select-selected {
+        position: relative;
+        .downward-triangle {
+            position: absolute;
+            top: 21px;
+            right: 10px;
+            width:0;
+            border-top:solid 6px $color-black;
+            border-right:solid 6px transparent;
+            border-left:solid 6px transparent;
+        }
+        .downward-triangle .empty {
+            position: absolute;
+            top:-5px;
+            left:-4px;
+            width:0;
+            border-top:solid 4px $color-white;
+            border-right:solid 4px transparent;
+            border-left:solid 4px transparent;
+            z-index:1;
+        }
+    }
+      
+    /*point the arrow upwards when the select box is open (active):*/
+    .select-selected.select-arrow-active {
+        .downward-triangle {
+            top: 21px;
+            border-bottom:solid 6px $color-black;
+            border-top: none;
+        }
+        .downward-triangle .empty {
+            top:1px;
+            border-bottom:solid 4px $color-white;
+            border-top: none;
+        }
+    }
