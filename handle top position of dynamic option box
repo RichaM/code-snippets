@@ -1,0 +1,25 @@
+/**
+ * @function handleTopPosition
+ * @type {private}
+ * @description This function sets the top position of suggestion box 
+ */
+function handleTopPosition(){
+	let loqateSuggestionBox = document.querySelector('.pcaautocomplete');
+	let loqateInputBox = document.querySelector('.loqate-address-finder');
+	let loqateInputTopPos =  loqateInputBox.getBoundingClientRect().top;
+	let loqateInputBottomPos = loqateInputBox.getBoundingClientRect().bottom;
+	let loqateInputHeight = loqateInputBottomPos - loqateInputTopPos;
+	let loqateSuggestionTopPos = loqateSuggestionBox.getBoundingClientRect().top;
+	let loqateSuggestionBottomPos = loqateSuggestionBox.getBoundingClientRect().bottom;
+	let loqateSuggestionTopOverlaps = loqateSuggestionTopPos > loqateInputTopPos && loqateSuggestionTopPos < loqateInputBottomPos ;
+	let loqateSuggestionBottomOverlaps = loqateSuggestionBottomPos > loqateInputTopPos && loqateSuggestionBottomPos < loqateInputBottomPos;
+	let loqateSuggestionTopPosFinal;
+	if(loqateSuggestionTopOverlaps){
+		loqateSuggestionTopPosFinal = loqateSuggestionTopPos + loqateInputHeight;
+		$(loqateSuggestionBox).css({ top: loqateSuggestionTopPosFinal+'px' });
+	}
+	else if(loqateSuggestionBottomOverlaps){
+		loqateSuggestionTopPosFinal = loqateSuggestionTopPos - loqateInputHeight;
+		$(loqateSuggestionBox).css({ top:  loqateSuggestionTopPosFinal+'px'});
+	}
+}
