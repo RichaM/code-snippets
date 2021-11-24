@@ -1,0 +1,27 @@
+var userDetails = {
+    name: "Mayank",
+    age: 30,
+    designation: "Developer",
+    address: {
+            street: "Rohini",
+            country: "India"
+    }, showDetails: function() {
+        console.log("UserName: " + this.name);
+    }
+}
+
+var destinationObject = {};
+
+function deepCopy(sourceObject, destinationObject) {
+
+    for(key in sourceObject) {
+        if(typeof sourceObject[key] != "object") {
+            destinationObject[key] = sourceObject[key];
+        } else {
+            destinationObject[key] = {};
+            deepCopy(sourceObject[key], destinationObject[key]);
+        }
+    }
+}
+
+deepCopy(userDetails, destinationObject);
